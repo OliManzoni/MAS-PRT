@@ -1,0 +1,31 @@
+{
+  "columns": {
+    "Treatment": "Condition",
+    "Litter_ID": "Mother",
+    "Sex": "SexCode",
+    "Trial": "Sequence",
+    "Track": "Track_mm",
+    "Latency": "Latency_ms",
+    "Observed": "Retrieved"
+  },
+  "distance_metrics": {
+    "path": [
+      "Track",
+      null,
+      "Total distance (mm)"
+    ]
+  },
+  "learning_metrics": {
+    "latency": [
+      "Latency",
+      "Observed",
+      "Retrieval latency (ms)"
+    ]
+  },
+  "treatment_reference": "Vehicle",
+  "sex_reference": "F",
+  "trial_origin": 0,
+  "distance_unit": "mm",
+  "latency_unit": "ms",
+  "deadline": 90000
+}
