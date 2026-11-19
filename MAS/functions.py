@@ -1,4 +1,5 @@
 import pandas as pd
+from MAS.tracking_io import read_tracking_csv
 import math as m
 import numpy as np
 import cv2
@@ -275,9 +276,9 @@ def timestamp_read(path_to_video, csv):
     """
     Get the frame value in second of the video. Useful when videos are corrupted
     """
-    vid_name = csv.split('_')[0]
+    vid_name = path.basename(csv).split('DLC', 1)[0]
     vid_name = vid_name.replace('DLC', '')
-    video = path_to_video +'\\'+ vid_name + ".mp4"
+    video = path.join(path_to_video, vid_name + '.mp4')
     cap = cv2.VideoCapture(video)
     timestamps = []
 
@@ -307,11 +308,11 @@ def output_results(path_to_csv, video_path, path_to_output, poly_dict, nest_bord
                                       'distanceFEtoRet pixel'))
  
     #Prepare the list to match CSV and video
-    path_to_csv = str(path_to_csv+"\*.csv")
+    path_to_csv = path.join(path_to_csv, '*.csv')
     CSVList = glob.glob(path_to_csv)
     CSVList_short = []
     for csvItem in CSVList:
-        vid_name = csvItem.split('_')[0]
+        vid_name = path.basename(csvItem).split('DLC', 1)[0]
         vid_name = path.basename(vid_name.replace('DLC', ''))
         CSVList_short.append(vid_name)
 
@@ -339,7 +340,7 @@ def output_results(path_to_csv, video_path, path_to_output, poly_dict, nest_bord
         try:
             timestamps, vid_name = timestamp_read(video_path, str(path.basename(path.normpath(CSVList[csvIndex]))))
             print("lentim",len(timestamps))
-            df = pd.read_csv(CSVList[csvIndex], skiprows = 3)         
+            df = read_tracking_csv(CSVList[csvIndex])
             meandf, dam_size = mean_calculator(df, likelihood = DLC_threshold)
             remove_outliers(meandf)
             dataf.loc[i, 'video'] = vid_name
@@ -384,17 +385,9 @@ def output_results(path_to_csv, video_path, path_to_output, poly_dict, nest_bord
 
             dataf.loc[i, 'Area of Nest pixel'] = poly_dict["area"][dictIndex]
         
-        except: 
-            dataf.loc[i, 'video'] = "NOT FOUND"
-            dataf.loc[i, 'success frame'] = None
-            dataf.loc[i, 'success sec'] = None
-            dataf.loc[i,'distanceFEtoRet pixel'] = None
-            dataf.loc[i, 'firstEncounter sec'] = None
-            dataf.loc[i,'distanceToFirstEncounter'] = None
-            dataf.loc[i, 'firstEncounter frame'] = None
-            dataf.loc[i, 'distance pixel'] = None
-            dataf.loc[i, 'Area of Nest pixel'] = None
-    
+        except Exception as exc:
+            raise RuntimeError(f"Scoring failed for {video}: {exc}") from exc
+
     file_created = False
     increment = 0
     while not file_created:

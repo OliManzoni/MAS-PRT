@@ -20,8 +20,10 @@ More information in *DOI*
 
 To work, MAS uses a DeepLabCut detection of both the pup and the dam, and an automated detection of the Nest using Detectron2
 
+## DeepLabCut 3 compatibility preview
+
+The `codex/dlc3-compatibility` branch targets DeepLabCut 3.0.2 and Python 3.10–3.12. It includes compatibility changes for DLC 3 multi-animal inference and CSV output. The original installation instructions and releases remain the reference for the published DLC 2 workflow.
+
+This preview has passed synthetic adapter checks. It still needs validation with the trained DLC model, nest detector, and representative videos before use for scientific analyses. See [DLC3 migration notes](DLC3_MIGRATION.md) for setup and validation details.
 
 
-## Statistical analysis
-
-The [analysis folder](analysis/README.md) contains a documented Jupyter notebook and equivalent Python script for distance and trial-order mixed-effects analyses. Input columns, group labels, reference levels, outcomes and units are configurable for compatible trial-level pup-retrieval datasets. The code includes effect-size estimates and confidence intervals; datasets are supplied by the user.

@@ -4,32 +4,26 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "MasPRT"
-version = "0.1"
+version = "0.2.0.dev0"
 authors = [
-  { name="Chavis Manzoni Team, Inmed, INSERM", email=" " },
+  { name="Chavis Manzoni Team, Inmed, INSERM" },
 ]
 description = "Machine automated scoring for pup retrieval test"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10,<3.13"
 dependencies = [
-'deeplabcut',
-'matplotlib==3.7.2',
-'numpy==1.24.3',
-'opencv_contrib_python==4.8.0.76',
-'opencv_python==4.8.0.76',
-'pandas==2.0.3',
-'Pillow==10.4.0',
-'pycocotools==2.0.7',
-'Shapely==2.0.5',
-'tf-slim==1.1.0',
-'tensorpack==0.11',
-'tensorflow==2.10.0',
+'deeplabcut[tf]==3.0.2',
+'pandas>=2.2,<3',
+'numpy>=1.26,<2',
+'matplotlib>=3.8',
+'opencv-python-headless>=4.10,<4.12',
+'Pillow>=10.4',
+'pycocotools>=2.0.7',
+'Shapely>=2.0.5,<3',
 'xlsxwriter',
-'gdown',
-'torch',
-'torchvision', 
-'torchaudio',
+'PyYAML>=6',
 ]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -42,6 +36,12 @@ Homepage = "https://github.com/ChavisManzoniLab/MAS-PRT"
 Issues = "https://github.com/ChavisManzoniLab/MAS-PRT"
 
 
-[projects.gui-scripts]
-MAS = "MASPRT/MAS:GUI"
-mas = "MASPRT/MAS:GUI"
+[project.gui-scripts]
+MAS = "MAS.gui:GUI"
+mas = "MAS.gui:GUI"
+
+[tool.setuptools.packages.find]
+include = ["MAS", "MAS.*"]
+
+[tool.setuptools.package-data]
+MAS = ["DLC/**/*.yaml"]
