@@ -1,5 +1,4 @@
-from MAS.GUI import *
+from MAS.gui import GUI
 
 if __name__ == "__main__":
-
-	GUI()
+    GUI()

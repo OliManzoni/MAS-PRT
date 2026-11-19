@@ -35,7 +35,7 @@ def frame_extract(video_path, frame_per_vid = 1):
         frameperVid : The number of frame to extract per video. 
        
        """
-    path_to_video = str(video_path+"\*.mp4")
+    path_to_video = os.path.join(video_path, '*.mp4')
      #Clear target output directory if needed
     output = glob.glob(str(video_path + "/frames/")) 
 
@@ -120,11 +120,11 @@ def predict_nest(detector_path, image_dir, visual = False, nest_simplification =
         visual_path = str(temp + '/NestImage')
         if not path.isdir(visual_path) :
             os.mkdir(visual_path)
-    for folder in glob.glob(str(image_dir +"\*")):
+    for folder in glob.glob(os.path.join(image_dir, '*')):
         vidname = str(path.basename(path.normpath(folder))).replace(".mp4","")
         mask = []
         
-        for image in glob.glob(str(folder + "\*.jpg")):
+        for image in glob.glob(os.path.join(folder, '*.jpg')):
             inputs = cv2.imread(image)
             result = predictor(inputs)
             
@@ -201,7 +201,7 @@ def predict_nest(detector_path, image_dir, visual = False, nest_simplification =
     results['rawpolygon'] = tuple(results['rawpolygon'])
     results['polygon'] = tuple(results['polygon'])
     filename = os.path.dirname(image_dir) 
-    os.makedirs(str(filename + '\\Models'), exist_ok=True)
-    with open(filename+ '\\Models\\nestDict.pkl', 'wb') as f:
+    os.makedirs(os.path.join(filename, 'models'), exist_ok=True)
+    with open(os.path.join(filename, 'models', 'nestDict.pkl'), 'wb') as f:
         pickle.dump(results, f)
     return results
